@@ -18,11 +18,16 @@ class CatalogSerializer(serializers.HyperlinkedModelSerializer):
         return totalprice,totalpieces
 
 class CompanySerializer(serializers.HyperlinkedModelSerializer):
+    # catalogs = serializers.StringRelatedField(many=True)
+    # username = serializers.StringRelatedField(many=True)
+
     class Meta:
         model = Company
         fields = '__all__'
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
+    name = serializers.StringRelatedField()
+    company_name = serializers.StringRelatedField()
     class Meta:
         model = User
         fields = '__all__'
