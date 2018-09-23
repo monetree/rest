@@ -1,3 +1,4 @@
+
 from rest_framework import serializers
 from .models import *
 from django.db.models import Sum,Avg,Max,Min,Count,F,Q
@@ -17,13 +18,6 @@ class CatalogSerializer(serializers.HyperlinkedModelSerializer):
         totalprice = Catalog.objects.all().aggregate(total_price=Sum('per_piece_price'))
         return totalprice,totalpieces
 
-class CompanySerializer(serializers.HyperlinkedModelSerializer):
-    # catalogs = serializers.StringRelatedField(many=True)
-    # username = serializers.StringRelatedField(many=True)
-
-    class Meta:
-        model = Company
-        fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.StringRelatedField()
@@ -31,3 +25,27 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
+
+
+
+class CatalogData(serializers.ModelSerializer):
+    class Meta:
+        model = Catalog
+        fields = ('name', 'no_of_pcs', 'per_piece_price')
+
+
+class CompanySerializer(serializers.ModelSerializer):
+    # catalog_details = serializers.SerializerMethodField()
+    name = serializers.StringRelatedField()
+    catalog = CatalogData(many=True)
+    user = UserSerializer(many=True)
+    class Meta:
+        model = Company
+        fields = ('name', 'phone_number', 'catalog','user')
+
+    # def get_catalog_details(self, obj):
+    #     company_id=Company.objects.values('id')
+    #     # id=company_id['id']
+    #     print(company_id)
+    #     catalogdetails = Catalog.objects.values('per_piece_price','no_of_pcs','name')
+    #     return catalogdetails

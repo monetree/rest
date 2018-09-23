@@ -1,3 +1,4 @@
+ 
 from __future__ import unicode_literals
 from django.http import HttpResponse
 from .models import *
@@ -12,7 +13,7 @@ from rest_framework import viewsets
 
 
 class CatalogView(viewsets.ModelViewSet):
-    queryset =  Catalog.objects.all()
+    queryset =  Catalog.objects.select_related('company_name')
     serializer_class = CatalogSerializer
 
 class CompanyView(viewsets.ModelViewSet):
