@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from .models import *
 import json
 from django.http import JsonResponse, HttpResponse
-
 from .serializers import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -12,7 +11,7 @@ from rest_framework import viewsets
 
 
 class CatalogView(viewsets.ModelViewSet):
-    queryset =  Catalog.objects.all()
+    queryset =  Catalog.objects.select_related('company_name')
     serializer_class = CatalogSerializer
 
 class CompanyView(viewsets.ModelViewSet):
